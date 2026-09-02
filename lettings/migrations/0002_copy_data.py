@@ -31,8 +31,8 @@ def copy_lettings_data(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('oc_lettings_site', '0002_auto_20260819_0849'),
         ('lettings', '0001_initial'),
+        ('oc_lettings_site', '0002_auto_20260819_0849'),
     ]
 
     operations = [
