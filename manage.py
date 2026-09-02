@@ -1,8 +1,11 @@
+""" Command-line utility for Django administrative tasks. """
+
 import os
 import sys
 
 
 def main():
+    """ Run Django administrative commands. """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'oc_lettings_site.settings')
     try:
         from django.core.management import execute_from_command_line
