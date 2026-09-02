@@ -1,3 +1,5 @@
+""" Django settings for the Orange County Lettings project. """
+
 import os
 
 from pathlib import Path
