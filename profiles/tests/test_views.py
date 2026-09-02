@@ -1,46 +1,45 @@
 """ Test profiles views. """
 
-import pytest
 from unittest.mock import patch
+import pytest
 
-from django.contrib.auth.models import User
 from django.urls import reverse
 
-from profiles.models import Profile
 
-
-@pytest.mark.django_db
-def test_profiles_index_view(client):
+def test_profiles_index_view(client, profile):
     """ Test the profile index page. """
     response = client.get(reverse('profiles:index'))
+
+    content = response.content.decode()
 
     assert response.status_code == 200
     assert 'profiles/index.html' in [
         template.name for template in response.templates
     ]
+    assert profile in response.context['profiles_list']
+    assert profile.user.username in content
 
 
-@pytest.mark.django_db
-def test_profile_detail_view(client):
+def test_profile_detail_view(client, profile):
     """ Test the profile detail page. """
-    user = User.objects.create_user(
-        username='john',
-        password='password123',
-        first_name='John',
-        last_name='Doe',
-    )
-
-    profile = Profile.objects.create(
-        user=user,
-        favorite_city='Los Angeles',
-    )
-
     response = client.get(
-        reverse('profiles:profile', args=[user.username])
+        reverse(
+            'profiles:profile',
+            args=[profile.user.username]
+        )
     )
+
+    content = response.content.decode()
 
     assert response.status_code == 200
+    assert 'profiles/profile.html' in [
+        template.name for template in response.templates
+    ]
     assert response.context['profile'] == profile
+    assert profile.user.username in content
+    assert profile.user.first_name in content
+    assert profile.user.last_name in content
+    assert profile.favorite_city in content
 
 
 @pytest.mark.django_db
@@ -48,7 +47,10 @@ def test_missing_profile_returns_404(client):
     """ Test that a missing profile returns HTTP 404 and logs a warning. """
     with patch('profiles.views.logger.warning') as mock_warning:
         response = client.get(
-            reverse('profiles:profile', args=['unknown-user'])
+            reverse(
+                'profiles:profile',
+                args=['unknown-user']
+            )
         )
 
     assert response.status_code == 404
