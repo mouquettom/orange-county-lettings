@@ -2,7 +2,7 @@
 
 import pytest
 
-from lettings.models import Address, Letting
+from lettings.models import Address
 
 
 @pytest.mark.django_db
