@@ -1,12 +1,27 @@
 # Virtual environment
 .venv/
+venv/
+
+# Environment variables
+.env
+
+# IDE
+.idea/
+
+# macOS
+.DS_Store
 
 # Python
 __pycache__/
 *.py[cod]
 
-# IDE
-.DS_Store
+# Tests / coverage
+.pytest_cache/
+.coverage
+htmlcov/
 
-# Environnement variables
-.env
+# Django collected static files
+staticfiles/
+
+# Backup files
+*.backup
