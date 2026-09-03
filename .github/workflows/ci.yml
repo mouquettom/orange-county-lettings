@@ -27,6 +27,10 @@ jobs:
         run: |
           flake8 oc_lettings_site lettings profiles manage.py
 
+      - name: Collect static files
+        run: |
+          python manage.py collectstatic --noinput
+
       - name: Run tests with coverage
         run: |
           pytest \
