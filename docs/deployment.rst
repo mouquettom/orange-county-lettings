@@ -468,3 +468,44 @@ nouvelle version peut être reconstruite et redéployée.
 
 Cela permet de conserver l'historique Git sans réécrire les commits déjà
 publiés.
+
+Maintenance et gestion courante
+-------------------------------
+
+Avant de publier une modification importante, il est recommandé d'exécuter
+localement les contrôles de qualité du projet.
+
+Vérifier le linting :
+
+.. code-block:: bash
+
+   flake8 oc_lettings_site lettings profiles manage.py
+
+Exécuter les tests et vérifier la couverture :
+
+.. code-block:: bash
+
+   pytest --cov=. --cov-report=term-missing --cov-fail-under=80
+
+Reconstruire la documentation Sphinx :
+
+.. code-block:: bash
+
+   cd docs
+   make html
+
+Les erreurs applicatives en production peuvent être consultées dans Sentry.
+
+Les logs d'exécution du conteneur peuvent également être consultés depuis
+l'interface de Render.
+
+Les données de l'application peuvent être administrées avec l'interface
+d'administration Django accessible à l'adresse :
+
+.. code-block:: text
+
+   /admin/
+
+Lorsqu'une modification est poussée sur la branche ``master``, GitHub Actions
+vérifie automatiquement le projet avant de construire et déployer une nouvelle
+version.
