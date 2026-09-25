@@ -25,3 +25,6 @@ staticfiles/
 
 # Backup files
 *.backup
+
+# Sphinx
+docs/_build/
