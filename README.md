@@ -628,6 +628,16 @@ Ne pas ajouter :
 - de slash final dans `ALLOWED_HOSTS` ;
 - de secret directement dans le repository.
 
+## Application en production
+
+Application publique :
+
+**https://orange-county-lettings-a4ee.onrender.com/**
+
+Documentation technique :
+
+**https://orange-county-lettings-read-the-docs.readthedocs.io/fr/latest/**
+
 ### Fichiers statiques
 
 Les fichiers statiques sont préparés avec :
