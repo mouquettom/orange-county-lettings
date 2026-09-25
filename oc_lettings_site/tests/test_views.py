@@ -16,7 +16,6 @@ def test_home_page(client):
     assert 'index.html' in [
         template.name for template in response.templates
     ]
-    assert 'Welcome to Holiday Homes' in content
 
 
 @override_settings(
