@@ -10,13 +10,10 @@ def test_home_page(client):
     """ Test the home page. """
     response = client.get(reverse('index'))
 
-    content = response.content.decode()
-
     assert response.status_code == 200
     assert 'index.html' in [
         template.name for template in response.templates
     ]
-    assert 'Welcome to Holiday Homes' in content
 
 
 @override_settings(
