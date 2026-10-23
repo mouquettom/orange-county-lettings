@@ -1,33 +1,32 @@
-Base de données et modèles
-==========================
+Database and Models
+===================
 
-Vue d'ensemble
---------------
+Overview
+--------
 
-Orange County Lettings utilise SQLite comme base de données.
+Orange County Lettings uses SQLite as its database.
 
-Le fichier de base de données du projet est :
+The project's database file is:
 
 .. code-block:: text
 
    oc-lettings-site.sqlite3
 
-Django utilise son ORM pour manipuler les données à partir de classes Python.
-Chaque modèle Django représente une structure de données stockée en base.
+Django uses its ORM to handle data through Python classes. Each Django model
+represents a data structure stored in the database.
 
-Le projet contient principalement trois modèles :
+The project mainly contains three models:
 
-- ``Address`` : représente une adresse ;
-- ``Letting`` : représente une location ;
-- ``Profile`` : représente le profil d'un utilisateur.
+- ``Address``: represents an address;
+- ``Letting``: represents a letting;
+- ``Profile``: represents a user's profile.
 
-Modèle ``Address``
-------------------
+``Address`` model
+-----------------
 
-Le modèle ``Address`` est défini dans l'application ``lettings``.
+The ``Address`` model is defined in the ``lettings`` application.
 
-Il contient les informations nécessaires pour représenter une adresse
-immobilière :
+It contains the information needed to represent a property address:
 
 .. code-block:: python
 
@@ -49,19 +48,19 @@ immobilière :
            validators=[MinLengthValidator(3)]
        )
 
-Les validateurs permettent de limiter certaines valeurs.
+The validators restrict some values.
 
-Par exemple :
+For example:
 
-- ``number`` ne peut pas dépasser 9999 ;
-- ``zip_code`` ne peut pas dépasser 99999 ;
-- ``state`` doit contenir au minimum deux caractères ;
-- ``country_iso_code`` doit contenir au minimum trois caractères.
+- ``number`` cannot exceed 9999;
+- ``zip_code`` cannot exceed 99999;
+- ``state`` must contain at least two characters;
+- ``country_iso_code`` must contain at least three characters.
 
-Modèle ``Letting``
-------------------
+``Letting`` model
+-----------------
 
-Le modèle ``Letting`` est également défini dans l'application ``lettings``.
+The ``Letting`` model is also defined in the ``lettings`` application.
 
 .. code-block:: python
 
@@ -72,29 +71,30 @@ Le modèle ``Letting`` est également défini dans l'application ``lettings``.
            on_delete=models.CASCADE
        )
 
-Une location possède :
+A letting has:
 
-- un titre ;
-- une adresse.
+- a title;
+- an address.
 
-La relation entre ``Letting`` et ``Address`` est une relation ``OneToOneField``.
+The relationship between ``Letting`` and ``Address`` is a ``OneToOneField``
+relationship.
 
-Cela signifie qu'une location possède une seule adresse et qu'une adresse
-associée à une location ne peut être liée qu'à cette location.
+This means that a letting has a single address, and an address associated with
+a letting can only be linked to that letting.
 
-La propriété :
+The option:
 
 .. code-block:: python
 
    on_delete=models.CASCADE
 
-indique que si l'adresse associée est supprimée, la location correspondante
-est également supprimée.
+means that if the associated address is deleted, the corresponding letting is
+deleted as well.
 
-Modèle ``Profile``
-------------------
+``Profile`` model
+-----------------
 
-Le modèle ``Profile`` est défini dans l'application ``profiles``.
+The ``Profile`` model is defined in the ``profiles`` application.
 
 .. code-block:: python
 
@@ -108,21 +108,21 @@ Le modèle ``Profile`` est défini dans l'application ``profiles``.
            blank=True
        )
 
-Chaque profil est associé à un utilisateur Django.
+Each profile is associated with a Django user.
 
-La relation ``OneToOneField`` garantit qu'un utilisateur possède au maximum
-un profil associé.
+The ``OneToOneField`` relationship guarantees that a user has at most one
+associated profile.
 
-Le champ ``favorite_city`` est optionnel grâce à :
+The ``favorite_city`` field is optional thanks to:
 
 .. code-block:: python
 
    blank=True
 
-Relations entre les modèles
+Relationships between models
 ----------------------------
 
-La structure simplifiée de la base peut être représentée ainsi :
+The simplified database structure can be represented as follows:
 
 .. code-block:: text
 
@@ -139,49 +139,47 @@ La structure simplifiée de la base peut être représentée ainsi :
      ▼
    Letting
 
-Les modèles ``Address`` et ``Letting`` appartiennent à l'application
-``lettings``.
+The ``Address`` and ``Letting`` models belong to the ``lettings`` application.
 
-Le modèle ``Profile`` appartient à l'application ``profiles`` et utilise le
-modèle ``User`` fourni par Django.
+The ``Profile`` model belongs to the ``profiles`` application and uses the
+``User`` model provided by Django.
 
-ORM Django
+Django ORM
 ----------
 
-L'ORM de Django permet d'interagir avec la base de données en Python sans
-écrire directement de requêtes SQL.
+The Django ORM makes it possible to interact with the database in Python
+without writing SQL queries directly.
 
-Par exemple, la récupération d'une location peut être réalisée avec une
-instruction Python telle que :
+For example, a letting can be retrieved with a Python statement such as:
 
 .. code-block:: python
 
    Letting.objects.get(id=letting_id)
 
-Django traduit ensuite automatiquement cette instruction en requête SQL
-adaptée à la base de données.
+Django then automatically translates this statement into an SQL query suited
+to the database.
 
 Migrations
 ----------
 
-Les migrations permettent de faire évoluer la structure de la base de données
-de manière versionnée.
+Migrations make it possible to evolve the database structure in a versioned
+way.
 
-Deux commandes principales sont utilisées :
+Two main commands are used:
 
 .. code-block:: bash
 
    python manage.py makemigrations
    python manage.py migrate
 
-``makemigrations`` génère les fichiers décrivant les changements apportés aux
-modèles.
+``makemigrations`` generates the files describing the changes made to the
+models.
 
-``migrate`` applique ces migrations à la base de données.
+``migrate`` applies these migrations to the database.
 
-Lors de la refactorisation du projet, les modèles ont été déplacés vers les
-applications ``lettings`` et ``profiles`` tout en conservant les données
-existantes grâce au système de migrations Django.
+During the refactoring, the models were moved to the ``lettings`` and
+``profiles`` applications while preserving the existing data through the
+Django migration system.
 
-Cette approche permet d'éviter la manipulation directe de la base avec des
-requêtes SQL manuelles.
+This approach avoids manipulating the database directly with manual SQL
+queries.

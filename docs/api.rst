@@ -1,50 +1,50 @@
-Référence du code
-=================
+Code Reference
+==============
 
-Cette section présente automatiquement les principaux modules Python du projet
-à partir de leurs docstrings.
+This section automatically documents the project's main Python modules from
+their docstrings.
 
-La documentation est générée avec l'extension ``sphinx.ext.autodoc``.
+The documentation is generated with the ``sphinx.ext.autodoc`` extension.
 
-Application lettings
+lettings application
 --------------------
 
-Modèles
-~~~~~~~
+Models
+~~~~~~
 
 .. automodule:: lettings.models
    :members:
    :show-inheritance:
 
-Vues
-~~~~
+Views
+~~~~~
 
 .. automodule:: lettings.views
    :members:
    :show-inheritance:
 
-Application profiles
+profiles application
 --------------------
 
-Modèles
-~~~~~~~
+Models
+~~~~~~
 
 .. automodule:: profiles.models
    :members:
    :show-inheritance:
 
-Vues
-~~~~
+Views
+~~~~~
 
 .. automodule:: profiles.views
    :members:
    :show-inheritance:
 
-Projet principal
-----------------
+Main project
+------------
 
-Vues générales
-~~~~~~~~~~~~~~
+General views
+~~~~~~~~~~~~~
 
 .. automodule:: oc_lettings_site.views
    :members:
