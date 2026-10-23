@@ -66,7 +66,7 @@ https://orange-county-lettings-a4ee.onrender.com/
 
 Technical documentation:
 
-https://orange-county-lettings-read-the-docs.readthedocs.io/fr/latest/
+https://orange-county-lettings-read-the-docs.readthedocs.io/en/latest/
 
 GitHub repository:
 
@@ -828,7 +828,7 @@ The project documentation is generated with **Sphinx** and published on **Read t
 
 Public documentation:
 
-https://orange-county-lettings-read-the-docs.readthedocs.io/fr/latest/
+https://orange-county-lettings-read-the-docs.readthedocs.io/en/latest/
 
 It covers:
 
