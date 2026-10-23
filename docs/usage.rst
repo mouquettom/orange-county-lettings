@@ -1,157 +1,150 @@
-Utilisation de l'application
-============================
+Using the Application
+=====================
 
-Présentation
+Presentation
 ------------
 
-Orange County Lettings est une application de consultation de locations
-immobilières et de profils utilisateurs.
+Orange County Lettings is an application for browsing property lettings and
+user profiles.
 
-L'application est principalement destinée à la consultation des données.
-Les différentes pages permettent de naviguer entre les locations, leurs
-adresses et les profils enregistrés.
+The application is mainly intended for viewing data. Its pages let users
+navigate between lettings, their addresses and registered profiles.
 
-Page d'accueil
---------------
+Home page
+---------
 
-La page d'accueil est accessible à la racine du site :
+The home page is available at the root of the site:
 
 .. code-block:: text
 
    /
 
-Elle permet d'accéder aux deux fonctionnalités principales :
+It gives access to the two main features:
 
-- les locations ;
-- les profils utilisateurs.
+- lettings;
+- user profiles.
 
-Consultation des locations
----------------------------
+Browsing lettings
+-----------------
 
-La page des locations permet d'afficher la liste des biens disponibles.
+The lettings page displays the list of available properties.
 
-Elle est accessible depuis la navigation principale du site.
+It is reachable from the site's main navigation.
 
-Pour chaque location, l'utilisateur peut consulter une page de détail contenant
-notamment :
+For each letting, the user can open a detail page showing, among other things:
 
-- le titre de la location ;
-- le numéro et la rue ;
-- la ville ;
-- l'État ;
-- le code postal ;
-- le code pays.
+- the title of the letting;
+- the street number and name;
+- the city;
+- the state;
+- the ZIP code;
+- the country code.
 
-Le fonctionnement peut être résumé ainsi :
-
-.. code-block:: text
-
-   Page d'accueil
-        |
-        v
-   Liste des locations
-        |
-        v
-   Détail d'une location
-        |
-        v
-   Adresse associée
-
-Consultation des profils
--------------------------
-
-La page des profils permet d'afficher les utilisateurs disposant d'un profil
-dans l'application.
-
-L'utilisateur peut ensuite sélectionner un profil afin d'accéder à sa page
-de détail.
-
-Cette page affiche notamment :
-
-- le nom d'utilisateur ;
-- la ville favorite du profil lorsqu'elle est renseignée.
-
-Le parcours correspondant est :
+The flow can be summarized as follows:
 
 .. code-block:: text
 
-   Page d'accueil
+   Home page
         |
         v
-   Liste des profils
+   Lettings list
         |
         v
-   Détail d'un profil
+   Letting details
+        |
+        v
+   Associated address
 
-Administration Django
+Browsing profiles
+-----------------
+
+The profiles page displays the users who have a profile in the application.
+
+The user can then select a profile to open its detail page.
+
+This page shows, among other things:
+
+- the username;
+- the profile's favorite city, when provided.
+
+The corresponding flow is:
+
+.. code-block:: text
+
+   Home page
+        |
+        v
+   Profiles list
+        |
+        v
+   Profile details
+
+Django administration
 ---------------------
 
-L'application dispose également de l'interface d'administration intégrée à
-Django.
+The application also provides Django's built-in administration interface.
 
-Elle est accessible à l'adresse :
+It is available at:
 
 .. code-block:: text
 
    /admin/
 
-Cette interface est réservée aux utilisateurs disposant des droits
-d'administration nécessaires.
+This interface is restricted to users with the required administration
+rights.
 
-Elle permet notamment de consulter et gérer les données enregistrées dans la
-base.
+It can be used to view and manage the data stored in the database.
 
-Pages d'erreur
+Error pages
+-----------
+
+Custom pages are provided for the main HTTP errors.
+
+404 error
+~~~~~~~~~
+
+An HTTP 404 error is returned when a user requests a resource or URL that does
+not exist.
+
+The application then displays a custom page instead of Django's default
+technical error page.
+
+500 error
+~~~~~~~~~
+
+An HTTP 500 error corresponds to an internal error raised while processing a
+request.
+
+In production, when ``DEBUG=False``, the user sees a custom error page without
+any internal technical details about the application.
+
+Main use cases
 --------------
 
-Des pages personnalisées sont prévues pour les principales erreurs HTTP.
+The main use cases are:
 
-Erreur 404
-~~~~~~~~~~
-
-Une erreur HTTP 404 est retournée lorsqu'un utilisateur demande une ressource
-ou une URL qui n'existe pas.
-
-L'application affiche alors une page personnalisée plutôt que la page d'erreur
-technique par défaut de Django.
-
-Erreur 500
-~~~~~~~~~~
-
-Une erreur HTTP 500 correspond à une erreur interne survenue pendant le
-traitement d'une requête.
-
-En production, lorsque ``DEBUG=False``, l'utilisateur voit une page d'erreur
-personnalisée sans obtenir les informations techniques internes de
-l'application.
-
-Cas d'utilisation principaux
------------------------------
-
-Les principaux cas d'utilisation sont les suivants :
-
-1. consulter la page d'accueil ;
-2. consulter la liste des locations ;
-3. afficher le détail d'une location et son adresse ;
-4. consulter la liste des profils ;
-5. afficher le détail d'un profil ;
-6. administrer les données via l'interface Django pour un utilisateur autorisé.
+1. view the home page;
+2. view the list of lettings;
+3. display the details of a letting and its address;
+4. view the list of profiles;
+5. display the details of a profile;
+6. manage the data through the Django interface as an authorized user.
 
 Navigation
 ----------
 
-La navigation générale peut être représentée ainsi :
+The overall navigation can be represented as follows:
 
 .. code-block:: text
 
-                        Accueil
+                         Home
                        /       \
                       /         \
                      v           v
-              Locations       Profils
+               Lettings       Profiles
                   |               |
                   v               v
-          Détail location   Détail profil
+          Letting details   Profile details
 
 
                   Administration

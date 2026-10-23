@@ -1,61 +1,61 @@
-Installation et démarrage rapide
-================================
+Installation and Quick Start
+============================
 
-Prérequis
----------
+Requirements
+------------
 
-Le projet utilise Python 3.9 et Django 3.0.
+The project uses Python 3.9 and Django 3.0.
 
-Avant de commencer, vérifier que les outils suivants sont disponibles :
+Before starting, make sure the following tools are available:
 
 - Python 3.9
 - Git
 - pip
-- un environnement virtuel Python
+- a Python virtual environment
 
-Cloner le projet
-----------------
+Clone the project
+-----------------
 
-Cloner le dépôt GitHub :
+Clone the GitHub repository:
 
 .. code-block:: bash
 
    git clone https://github.com/mouquettom/orange-county-lettings.git
    cd orange-county-lettings
 
-Créer un environnement virtuel
--------------------------------
+Create a virtual environment
+----------------------------
 
-Sous macOS ou Linux :
+On macOS or Linux:
 
 .. code-block:: bash
 
    python3 -m venv .venv
    source .venv/bin/activate
 
-Sous Windows :
+On Windows:
 
 .. code-block:: powershell
 
    python -m venv .venv
    .venv\Scripts\activate
 
-Installer les dépendances
--------------------------
+Install dependencies
+--------------------
 
-Mettre pip à jour puis installer les dépendances du projet :
+Upgrade pip, then install the project dependencies:
 
 .. code-block:: bash
 
    python -m pip install --upgrade pip
    pip install -r requirements.txt
 
-Configurer les variables d'environnement
-----------------------------------------
+Configure environment variables
+-------------------------------
 
-Créer un fichier ``.env`` à la racine du projet.
+Create a ``.env`` file at the root of the project.
 
-Exemple de configuration pour l'environnement de développement :
+Example configuration for the development environment:
 
 .. code-block:: text
 
@@ -66,46 +66,46 @@ Exemple de configuration pour l'environnement de développement :
    SENTRY_DSN=
    SENTRY_ENVIRONMENT=development
 
-Le fichier ``.env`` contient des informations de configuration potentiellement
-sensibles et ne doit pas être versionné dans Git.
+The ``.env`` file contains potentially sensitive configuration and must not be
+committed to Git.
 
-Le fichier ``.env.example`` peut être utilisé comme modèle afin de connaître
-les variables nécessaires sans exposer de secret.
+The ``.env.example`` file can be used as a template to see which variables are
+required without exposing any secret.
 
-Appliquer les migrations
-------------------------
+Apply migrations
+----------------
 
-Appliquer les migrations Django à la base de données :
+Apply the Django migrations to the database:
 
 .. code-block:: bash
 
    python manage.py migrate
 
-Lancer le serveur de développement
-----------------------------------
+Run the development server
+--------------------------
 
-Démarrer l'application avec le serveur de développement Django :
+Start the application with the Django development server:
 
 .. code-block:: bash
 
    python manage.py runserver
 
-L'application est ensuite accessible à l'adresse :
+The application is then available at:
 
 .. code-block:: text
 
    http://127.0.0.1:8000/
 
-L'interface d'administration Django est accessible à l'adresse :
+The Django administration interface is available at:
 
 .. code-block:: text
 
    http://127.0.0.1:8000/admin/
 
-Démarrage rapide
-----------------
+Quick start
+-----------
 
-Pour démarrer rapidement le projet après l'avoir cloné :
+To quickly start the project after cloning it:
 
 .. code-block:: bash
 
@@ -115,6 +115,5 @@ Pour démarrer rapidement le projet après l'avoir cloné :
    python manage.py migrate
    python manage.py runserver
 
-Le projet utilise SQLite comme base de données locale. Aucune installation
-d'un serveur de base de données externe n'est donc nécessaire pour lancer
-l'application dans son environnement de développement.
+The project uses SQLite as its local database, so no external database server
+needs to be installed to run the application in development.

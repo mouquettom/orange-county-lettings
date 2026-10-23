@@ -45,7 +45,7 @@ exclude_patterns = [
     '.DS_Store',
 ]
 
-language = 'fr'
+language = 'en'
 
 
 # -- Options for HTML output -------------------------------------------------
