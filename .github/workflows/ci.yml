@@ -11,7 +11,7 @@ on:
 jobs:
 
   # -------------------------------------------------------
-  # 1. Vérification du projet
+  # 1. Project checks
   # -------------------------------------------------------
   tests:
     name: Tests and code quality
@@ -46,17 +46,17 @@ jobs:
 
 
   # -------------------------------------------------------
-  # 2. Construction et publication de l'image Docker
+  # 2. Docker image build and publication
   # -------------------------------------------------------
   docker:
     name: Build and push Docker image
     runs-on: ubuntu-latest
 
-    # Ce job ne démarre que si le job "tests" réussit.
+    # This job only starts if the "tests" job succeeds.
     needs: tests
 
-    # On publie l'image uniquement lors d'un push sur master,
-    # pas lors d'une simple Pull Request.
+    # The image is only published on a push to master,
+    # not on a simple pull request.
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
@@ -83,7 +83,7 @@ jobs:
 
 
   # -------------------------------------------------------
-  # 3. Déploiement Render
+  # 3. Render deployment
   # -------------------------------------------------------
   deploy:
     name: Deploy to Render

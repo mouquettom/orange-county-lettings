@@ -1,17 +1,17 @@
-Déploiement et CI/CD
+Deployment and CI/CD
 ====================
 
-Vue d'ensemble
---------------
+Overview
+--------
 
-Orange County Lettings utilise une chaîne de déploiement automatisée basée sur
-Docker, GitHub Actions, Docker Hub et Render.
+Orange County Lettings uses an automated deployment pipeline based on Docker,
+GitHub Actions, Docker Hub and Render.
 
-Le fonctionnement général est le suivant :
+The overall flow is as follows:
 
 .. code-block:: text
 
-   Développeur
+   Developer
        |
        | git push
        v
@@ -27,7 +27,7 @@ Le fonctionnement général est le suivant :
        +--> Pytest + coverage
        |
        v
-   Build Docker
+   Docker build
        |
        v
    Docker Hub
@@ -36,20 +36,19 @@ Le fonctionnement général est le suivant :
    Render
        |
        v
-   Application en production
+   Production application
 
-L'objectif est de vérifier automatiquement la qualité du projet avant de
-construire et de déployer une nouvelle version.
+The goal is to automatically check the quality of the project before building
+and deploying a new version.
 
 Docker
 ------
 
-L'application est conteneurisée avec Docker.
+The application is containerized with Docker.
 
-Le fichier ``Dockerfile`` définit l'environnement nécessaire à l'exécution
-de l'application.
+The ``Dockerfile`` defines the environment required to run the application.
 
-La configuration utilisée est la suivante :
+The configuration used is the following:
 
 .. code-block:: docker
 
@@ -72,47 +71,46 @@ La configuration utilisée est la suivante :
 
    CMD ["sh", "-c", "exec gunicorn oc_lettings_site.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2"]
 
-Image de base
-~~~~~~~~~~~~~
+Base image
+~~~~~~~~~~
 
-L'image utilise Python 3.9 sur une distribution Debian légère :
+The image uses Python 3.9 on a lightweight Debian distribution:
 
 .. code-block:: text
 
    python:3.9-slim-bookworm
 
-Cette image contient l'environnement Python nécessaire tout en limitant la
-taille du conteneur.
+This image provides the required Python environment while keeping the
+container small.
 
-Variables Python
+Python variables
 ~~~~~~~~~~~~~~~~
 
-Les variables suivantes sont définies :
+The following variables are defined:
 
 .. code-block:: docker
 
    ENV PYTHONDONTWRITEBYTECODE=1
    ENV PYTHONUNBUFFERED=1
 
-``PYTHONDONTWRITEBYTECODE`` évite la génération de fichiers ``.pyc``.
+``PYTHONDONTWRITEBYTECODE`` prevents ``.pyc`` files from being generated.
 
-``PYTHONUNBUFFERED`` permet d'envoyer immédiatement les logs vers la sortie
-standard, ce qui est utile dans un environnement Docker.
+``PYTHONUNBUFFERED`` sends logs to standard output immediately, which is useful
+in a Docker environment.
 
-Répertoire de travail
-~~~~~~~~~~~~~~~~~~~~~
+Working directory
+~~~~~~~~~~~~~~~~~
 
 .. code-block:: docker
 
    WORKDIR /app
 
-Le dossier ``/app`` devient le répertoire de travail principal à l'intérieur
-du conteneur.
+The ``/app`` folder becomes the main working directory inside the container.
 
-Installation des dépendances
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Installing dependencies
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Les dépendances sont installées à partir du fichier ``requirements.txt`` :
+Dependencies are installed from the ``requirements.txt`` file:
 
 .. code-block:: docker
 
@@ -120,70 +118,70 @@ Les dépendances sont installées à partir du fichier ``requirements.txt`` :
 
    RUN pip install --no-cache-dir -r requirements.txt
 
-Le fichier des dépendances est copié avant le reste du projet afin de profiter
-du système de cache des couches Docker.
+The requirements file is copied before the rest of the project to take
+advantage of Docker layer caching.
 
-Copie du projet
-~~~~~~~~~~~~~~~
+Copying the project
+~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: docker
 
    COPY . .
 
-Cette instruction copie le contenu du projet dans le conteneur.
+This instruction copies the project content into the container.
 
-Le fichier ``.dockerignore`` permet d'exclure les fichiers qui ne doivent pas
-être intégrés à l'image, notamment les fichiers locaux ou sensibles.
+The ``.dockerignore`` file excludes files that must not be included in the
+image, such as local or sensitive files.
 
-Fichiers statiques
-~~~~~~~~~~~~~~~~~~
+Static files
+~~~~~~~~~~~~
 
-Les fichiers statiques sont collectés pendant la construction de l'image :
+Static files are collected while the image is built:
 
 .. code-block:: docker
 
    RUN python manage.py collectstatic --noinput
 
-Ils sont ensuite servis en production grâce à WhiteNoise.
+They are then served in production by WhiteNoise.
 
-Serveur de production
-~~~~~~~~~~~~~~~~~~~~~
+Production server
+~~~~~~~~~~~~~~~~~
 
-L'application est exécutée avec Gunicorn :
+The application runs with Gunicorn:
 
 .. code-block:: docker
 
    CMD ["sh", "-c", "exec gunicorn oc_lettings_site.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2"]
 
-Gunicorn charge l'application WSGI Django depuis :
+Gunicorn loads the Django WSGI application from:
 
 .. code-block:: text
 
    oc_lettings_site.wsgi:application
 
-``0.0.0.0`` permet au serveur d'écouter sur toutes les interfaces réseau du
-conteneur.
+``0.0.0.0`` makes the server listen on every network interface of the
+container.
 
-La variable :
+The variable:
 
 .. code-block:: text
 
    ${PORT:-8000}
 
-signifie que le port fourni par l'environnement est utilisé lorsqu'il existe.
+means that the port provided by the environment is used when it exists.
 
-Sinon, le port 8000 est utilisé par défaut.
+Otherwise, port 8000 is used by default.
 
-Construire l'image localement
------------------------------
+Build the image locally
+-----------------------
 
-Pour construire l'image Docker :
+To build the Docker image:
 
 .. code-block:: bash
 
    docker build -t orange-county-lettings:local .
 
-Pour lancer le conteneur :
+To run the container:
 
 .. code-block:: bash
 
@@ -192,7 +190,7 @@ Pour lancer le conteneur :
      --env-file .env \
      orange-county-lettings:local
 
-L'application est alors accessible sur :
+The application is then available at:
 
 .. code-block:: text
 
@@ -201,19 +199,19 @@ L'application est alors accessible sur :
 Docker Hub
 ----------
 
-Les images de production sont publiées sur Docker Hub dans le dépôt :
+Production images are published on Docker Hub in the repository:
 
 .. code-block:: text
 
    tommouquet/orange-county-lettings
 
-L'image la plus récente peut être téléchargée avec :
+The latest image can be pulled with:
 
 .. code-block:: bash
 
    docker pull tommouquet/orange-county-lettings:latest
 
-Puis exécutée avec :
+Then run with:
 
 .. code-block:: bash
 
@@ -222,38 +220,38 @@ Puis exécutée avec :
      --env-file .env \
      tommouquet/orange-county-lettings:latest
 
-Tags Docker
+Docker tags
 ~~~~~~~~~~~
 
-Chaque image générée depuis la branche ``master`` est publiée avec deux tags.
+Each image built from the ``master`` branch is published with two tags.
 
-Le premier tag est :
+The first tag is:
 
 .. code-block:: text
 
    latest
 
-Il correspond à la version la plus récemment publiée.
+It points to the most recently published version.
 
-Le second utilise le SHA du commit Git :
+The second one uses the Git commit SHA:
 
 .. code-block:: text
 
-   tommouquet/orange-county-lettings:<SHA_COMMIT>
+   tommouquet/orange-county-lettings:<COMMIT_SHA>
 
-Ce second tag permet d'identifier précisément la version du code utilisée
-pour construire une image.
+This second tag identifies exactly which version of the code was used to build
+an image.
 
 GitHub Actions
 --------------
 
-Le pipeline CI/CD est défini dans :
+The CI/CD pipeline is defined in:
 
 .. code-block:: text
 
    .github/workflows/ci.yml
 
-Il contient trois jobs principaux :
+It contains three main jobs:
 
 .. code-block:: text
 
@@ -265,17 +263,17 @@ Il contient trois jobs principaux :
       v
    deploy
 
-Tests et qualité
-~~~~~~~~~~~~~~~~
+Tests and code quality
+~~~~~~~~~~~~~~~~~~~~~~
 
-Le premier job exécute les contrôles de qualité du projet sur une machine
-Ubuntu temporaire fournie par GitHub.
+The first job runs the project's quality checks on a temporary Ubuntu machine
+provided by GitHub.
 
-Il réalise notamment :
+It performs, among other things:
 
 .. code-block:: text
 
-   installation des dépendances
+   dependency installation
            |
            v
         Flake8
@@ -286,41 +284,41 @@ Il réalise notamment :
            v
    Pytest + coverage
 
-La couverture minimale exigée est de 80 %.
+The minimum required coverage is 80%.
 
-La commande utilisée pour les tests est :
+The command used to run the tests is:
 
 .. code-block:: bash
 
    pytest --cov=. --cov-report=term-missing --cov-fail-under=80
 
-Si un test échoue, les jobs suivants ne sont pas exécutés.
+If a test fails, the following jobs are not run.
 
-Construction et publication Docker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Docker build and publication
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Le job Docker dépend du succès du job de tests.
+The Docker job depends on the success of the tests job.
 
-Il est exécuté uniquement pour un push sur la branche ``master``.
+It only runs on a push to the ``master`` branch.
 
-Il construit l'image Docker puis la publie sur Docker Hub avec les tags :
+It builds the Docker image and publishes it to Docker Hub with the tags:
 
 .. code-block:: text
 
    latest
-   SHA du commit
+   commit SHA
 
-L'authentification à Docker Hub utilise des variables et secrets GitHub afin
-de ne pas stocker les identifiants directement dans le fichier de workflow.
+Docker Hub authentication uses GitHub variables and secrets so that
+credentials are not stored directly in the workflow file.
 
-Déploiement
-~~~~~~~~~~~
+Deployment
+~~~~~~~~~~
 
-Le job de déploiement dépend du succès du job Docker.
+The deployment job depends on the success of the Docker job.
 
-Il est lui aussi exécuté uniquement lors d'un push sur ``master``.
+It also only runs on a push to ``master``.
 
-Une requête HTTP est envoyée au Deploy Hook de Render :
+An HTTP request is sent to the Render Deploy Hook:
 
 .. code-block:: bash
 
@@ -328,16 +326,16 @@ Une requête HTTP est envoyée au Deploy Hook de Render :
      --request POST \
      "${RENDER_DEPLOY_HOOK_URL}"
 
-Render récupère alors la nouvelle image disponible sur Docker Hub et redémarre
-le service avec cette version.
+Render then pulls the new image from Docker Hub and restarts the service with
+this version.
 
 Branches
 --------
 
-Le pipeline est conçu pour distinguer les branches de développement de la
-branche de production.
+The pipeline is designed to distinguish development branches from the
+production branch.
 
-Pour un push sur une autre branche que ``master`` :
+For a push to a branch other than ``master``:
 
 .. code-block:: text
 
@@ -346,9 +344,9 @@ Pour un push sur une autre branche que ``master`` :
     v
    tests
     |
-    +--> fin
+    +--> end
 
-Pour un push sur ``master`` :
+For a push to ``master``:
 
 .. code-block:: text
 
@@ -363,15 +361,15 @@ Pour un push sur ``master`` :
     v
    Render deploy
 
-Une branche secondaire peut donc être vérifiée par la CI sans provoquer de
-déploiement en production.
+A secondary branch can therefore be checked by the CI without triggering a
+production deployment.
 
-Variables et secrets
---------------------
+Variables and secrets
+---------------------
 
-Les données sensibles ne sont pas enregistrées directement dans le dépôt Git.
+Sensitive data is not stored directly in the Git repository.
 
-GitHub Actions utilise notamment :
+GitHub Actions notably uses:
 
 .. code-block:: text
 
@@ -379,10 +377,10 @@ GitHub Actions utilise notamment :
    DOCKERHUB_TOKEN
    RENDER_DEPLOY_HOOK_URL
 
-Render dispose également de ses propres variables d'environnement pour
-configurer Django en production.
+Render also has its own environment variables to configure Django in
+production.
 
-Les principales variables sont :
+The main variables are:
 
 .. code-block:: text
 
@@ -392,120 +390,114 @@ Les principales variables sont :
    SENTRY_DSN
    SENTRY_ENVIRONMENT
 
-En production, ``DEBUG`` doit être désactivé.
+In production, ``DEBUG`` must be disabled.
 
-Par exemple :
+For example:
 
 .. code-block:: text
 
    DEBUG=False
 
-``ALLOWED_HOSTS`` doit contenir le domaine utilisé par l'application.
+``ALLOWED_HOSTS`` must contain the domain used by the application.
 
 Render
 ------
 
-Render exécute l'image Docker publiée sur Docker Hub.
+Render runs the Docker image published on Docker Hub.
 
-L'application en production est disponible à l'adresse :
+The production application is available at:
 
 .. code-block:: text
 
    https://orange-county-lettings-a4ee.onrender.com/
 
-Render fournit une variable ``PORT`` à l'application.
+Render provides a ``PORT`` variable to the application.
 
-Le Dockerfile utilise cette valeur automatiquement grâce à :
+The Dockerfile uses this value automatically thanks to:
 
 .. code-block:: text
 
    ${PORT:-8000}
 
-Cela permet d'utiliser la même image aussi bien localement que sur Render.
+This makes it possible to use the same image both locally and on Render.
 
-Fichiers statiques
-------------------
+Static files
+------------
 
-Les fichiers CSS, JavaScript et autres ressources statiques sont préparés avec
-la commande :
+CSS, JavaScript and other static resources are prepared with the command:
 
 .. code-block:: bash
 
    python manage.py collectstatic --noinput
 
-En production, WhiteNoise permet à l'application Django de servir ces fichiers
-sans dépendre d'un serveur statique externe.
+In production, WhiteNoise lets the Django application serve these files without
+relying on an external static file server.
 
-Base SQLite en production
--------------------------
+SQLite in production
+--------------------
 
-Le projet utilise SQLite.
+The project uses SQLite.
 
-Cette solution est suffisante pour l'application de démonstration Orange
-County Lettings.
+This is sufficient for the Orange County Lettings demonstration application.
 
-Cependant, le système de fichiers d'un conteneur peut être éphémère sur une
-plateforme d'hébergement.
+However, a container's file system can be ephemeral on a hosting platform.
 
-Pour une application réelle nécessitant des écritures persistantes et une
-utilisation plus importante, une base externe telle que PostgreSQL serait
-plus adaptée.
+For a real application that needs persistent writes and heavier usage, an
+external database such as PostgreSQL would be more suitable.
 
-Retour à une version précédente
--------------------------------
+Rolling back to a previous version
+----------------------------------
 
-Lorsqu'un commit déjà publié doit être annulé, il est possible d'utiliser :
+When a commit that has already been pushed must be undone, you can use:
 
 .. code-block:: bash
 
-   git revert <SHA_COMMIT>
+   git revert <COMMIT_SHA>
 
-Cette commande crée un nouveau commit qui inverse les modifications du commit
-ciblé.
+This command creates a new commit that reverses the changes of the targeted
+commit.
 
-Après un nouveau ``git push`` sur ``master``, le pipeline est relancé et cette
-nouvelle version peut être reconstruite et redéployée.
+After a new ``git push`` to ``master``, the pipeline runs again and this new
+version can be rebuilt and redeployed.
 
-Cela permet de conserver l'historique Git sans réécrire les commits déjà
-publiés.
+This keeps the Git history intact without rewriting commits that have already
+been published.
 
-Maintenance et gestion courante
--------------------------------
+Maintenance and day-to-day operations
+-------------------------------------
 
-Avant de publier une modification importante, il est recommandé d'exécuter
-localement les contrôles de qualité du projet.
+Before publishing a significant change, it is recommended to run the project's
+quality checks locally.
 
-Vérifier le linting :
+Check linting:
 
 .. code-block:: bash
 
    flake8 oc_lettings_site lettings profiles manage.py
 
-Exécuter les tests et vérifier la couverture :
+Run the tests and check coverage:
 
 .. code-block:: bash
 
    pytest --cov=. --cov-report=term-missing --cov-fail-under=80
 
-Reconstruire la documentation Sphinx :
+Rebuild the Sphinx documentation:
 
 .. code-block:: bash
 
    cd docs
    make html
 
-Les erreurs applicatives en production peuvent être consultées dans Sentry.
+Application errors in production can be reviewed in Sentry.
 
-Les logs d'exécution du conteneur peuvent également être consultés depuis
-l'interface de Render.
+The container's runtime logs can also be viewed from the Render dashboard.
 
-Les données de l'application peuvent être administrées avec l'interface
-d'administration Django accessible à l'adresse :
+The application data can be managed through the Django administration
+interface available at:
 
 .. code-block:: text
 
    /admin/
 
-Lorsqu'une modification est poussée sur la branche ``master``, GitHub Actions
-vérifie automatiquement le projet avant de construire et déployer une nouvelle
-version.
+When a change is pushed to the ``master`` branch, GitHub Actions automatically
+checks the project before building and deploying a new version.

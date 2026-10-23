@@ -1,18 +1,18 @@
 Orange County Lettings
 ======================
 
-Bienvenue dans la documentation technique du projet Orange County Lettings.
+Welcome to the technical documentation of the Orange County Lettings project.
 
-Orange County Lettings est une application web développée avec Django permettant
-de consulter des locations immobilières ainsi que des profils utilisateurs.
+Orange County Lettings is a web application built with Django that lets users
+browse property lettings and user profiles.
 
-Le projet a été refactorisé afin d'améliorer sa modularité, sa qualité et sa
-maintenabilité. Il intègre également des tests automatisés, une gestion des logs
-et des erreurs avec Sentry, une conteneurisation Docker ainsi qu'un pipeline
-CI/CD permettant son déploiement automatique sur Render.
+The project was refactored to improve its modularity, quality and
+maintainability. It also includes automated tests, logging and error tracking
+with Sentry, Docker containerization and a CI/CD pipeline that deploys it
+automatically to Render.
 
-Cette documentation présente l'installation du projet, son architecture,
-ses modèles de données, son utilisation ainsi que son processus de déploiement.
+This documentation covers the project's installation, architecture, data
+models, usage and deployment process.
 
 .. toctree::
    :maxdepth: 2

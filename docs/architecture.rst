@@ -1,27 +1,26 @@
-Architecture du projet
-======================
+Project Architecture
+====================
 
-Vue d'ensemble
---------------
+Overview
+--------
 
-Orange County Lettings est une application web développée avec Django.
+Orange County Lettings is a web application built with Django.
 
-Le projet a été refactorisé afin de séparer les différentes responsabilités
-fonctionnelles dans plusieurs applications Django.
+The project was refactored to split its functional responsibilities across
+several Django applications.
 
-L'architecture principale repose sur trois modules :
+The main architecture relies on three modules:
 
-- ``oc_lettings_site`` : configuration générale du projet ;
-- ``lettings`` : gestion des locations et des adresses ;
-- ``profiles`` : gestion des profils utilisateurs.
+- ``oc_lettings_site``: general project configuration;
+- ``lettings``: management of lettings and addresses;
+- ``profiles``: management of user profiles.
 
-Cette séparation permet de rendre le code plus lisible, maintenable et
-évolutif.
+This separation makes the code more readable, maintainable and scalable.
 
-Structure générale
-------------------
+General structure
+-----------------
 
-L'organisation simplifiée du projet est la suivante :
+The simplified project layout is as follows:
 
 .. code-block:: text
 
@@ -64,81 +63,79 @@ L'organisation simplifiée du projet est la suivante :
    ├── setup.cfg
    └── oc-lettings-site.sqlite3
 
-Application ``oc_lettings_site``
+``oc_lettings_site`` application
 --------------------------------
 
-Le module ``oc_lettings_site`` contient la configuration générale du projet
-Django.
+The ``oc_lettings_site`` module contains the general configuration of the
+Django project.
 
-Il regroupe notamment :
+It includes, among other things:
 
-- les paramètres dans ``settings.py`` ;
-- les URLs principales dans ``urls.py`` ;
-- la page d'accueil ;
-- les handlers personnalisés pour les erreurs HTTP 404 et 500 ;
-- la configuration WSGI utilisée par Gunicorn en production.
+- the settings in ``settings.py``;
+- the root URLs in ``urls.py``;
+- the home page;
+- the custom handlers for HTTP 404 and 500 errors;
+- the WSGI configuration used by Gunicorn in production.
 
-Il constitue le point d'entrée principal du projet mais ne contient plus la
-logique métier des locations ou des profils.
+It is the main entry point of the project but no longer contains the business
+logic for lettings or profiles.
 
-Application ``lettings``
--------------------------
+``lettings`` application
+------------------------
 
-L'application ``lettings`` regroupe tout ce qui concerne les locations
-immobilières.
+The ``lettings`` application groups everything related to property lettings.
 
-Elle contient notamment les modèles :
+It contains the following models:
 
-- ``Address`` ;
+- ``Address``;
 - ``Letting``.
 
-Elle gère :
+It handles:
 
-- l'affichage de la liste des locations ;
-- l'affichage du détail d'une location ;
-- les adresses associées aux locations ;
-- les URLs, vues, templates et tests propres à cette fonctionnalité.
+- displaying the list of lettings;
+- displaying the details of a letting;
+- the addresses associated with lettings;
+- the URLs, views, templates and tests specific to this feature.
 
-Application ``profiles``
--------------------------
+``profiles`` application
+------------------------
 
-L'application ``profiles`` regroupe les fonctionnalités liées aux profils
-utilisateurs.
+The ``profiles`` application groups the features related to user profiles.
 
-Elle contient le modèle ``Profile``.
+It contains the ``Profile`` model.
 
-Elle gère :
+It handles:
 
-- l'affichage de la liste des profils ;
-- l'affichage du détail d'un profil ;
-- les URLs, vues, templates et tests propres aux profils.
+- displaying the list of profiles;
+- displaying the details of a profile;
+- the URLs, views, templates and tests specific to profiles.
 
-Séparation des responsabilités
+Separation of responsibilities
 ------------------------------
 
-Avant la refactorisation, plusieurs fonctionnalités étaient regroupées dans
-le même module Django.
+Before the refactoring, several features were grouped in the same Django
+module.
 
-La séparation en applications permet d'obtenir une organisation plus claire :
+Splitting them into applications gives a clearer organization:
 
 .. code-block:: text
 
    oc_lettings_site
-       └── configuration générale
+       └── general configuration
 
    lettings
-       └── locations et adresses
+       └── lettings and addresses
 
    profiles
-       └── profils utilisateurs
+       └── user profiles
 
-Chaque application contient ses propres composants :
+Each application contains its own components:
 
 .. code-block:: text
 
-   modèles
+   models
       ↓
-   vues
+   views
       ↓
    URLs
       ↓
@@ -146,42 +143,41 @@ Chaque application contient ses propres composants :
       ↓
    tests
 
-Cycle d'une requête Django
---------------------------
+Django request lifecycle
+------------------------
 
-Lorsqu'un utilisateur consulte une page, la requête traverse plusieurs
-composants Django.
+When a user visits a page, the request goes through several Django components.
 
-Exemple simplifié :
+Simplified example:
 
 .. code-block:: text
 
-   Navigateur
+   Browser
        ↓
-   URL Django
+   Django URL
        ↓
-   Vue
+   View
        ↓
-   Modèle / base de données
+   Model / database
        ↓
-   Vue
+   View
        ↓
    Template
        ↓
-   Réponse HTML
+   HTML response
        ↓
-   Navigateur
+   Browser
 
-Par exemple, lors de la consultation d'une location :
+For example, when viewing a letting:
 
-1. Django recherche l'URL correspondante dans ``lettings/urls.py`` ;
-2. la vue associée dans ``lettings/views.py`` est appelée ;
-3. la vue récupère les données nécessaires via les modèles ;
-4. les données sont transmises au template ;
-5. Django génère la réponse HTML envoyée au navigateur.
+1. Django looks up the matching URL in ``lettings/urls.py``;
+2. the associated view in ``lettings/views.py`` is called;
+3. the view retrieves the required data through the models;
+4. the data is passed to the template;
+5. Django generates the HTML response sent to the browser.
 
-Technologies utilisées
-----------------------
+Technologies
+------------
 
 Back-end
 ~~~~~~~~
@@ -190,8 +186,8 @@ Back-end
 - Django 3.0
 - SQLite3
 
-Tests et qualité
-~~~~~~~~~~~~~~~~
+Testing and code quality
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Pytest
 - pytest-django
@@ -199,7 +195,7 @@ Tests et qualité
 - Coverage
 - Flake8
 
-Observabilité
+Observability
 ~~~~~~~~~~~~~
 
 - Python ``logging``
@@ -212,8 +208,8 @@ Production
 - WhiteNoise
 - Docker
 
-CI/CD et hébergement
-~~~~~~~~~~~~~~~~~~~~
+CI/CD and hosting
+~~~~~~~~~~~~~~~~~
 
 - GitHub Actions
 - Docker Hub
