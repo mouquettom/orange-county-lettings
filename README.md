@@ -1,94 +1,94 @@
 # Orange County Lettings
 
-Application web Django de gestion de locations immobilières et de profils utilisateurs, refactorisée et industrialisée dans le cadre de la formation **Développeur d'application Python** d'OpenClassrooms.
+Django web application for managing property lettings and user profiles, refactored and industrialized as part of the **OpenClassrooms Python Application Developer** program.
 
-Le projet met notamment en œuvre :
+This project implements:
 
-- une architecture Django modulaire ;
-- des tests automatisés avec Pytest ;
-- une couverture de tests supérieure à 80 % ;
-- du linting avec Flake8 ;
-- la journalisation Python et la remontée d'exceptions avec Sentry ;
-- une conteneurisation Docker ;
-- un pipeline CI/CD avec GitHub Actions ;
-- une publication automatique de l'image sur Docker Hub ;
-- un déploiement automatique sur Render ;
-- une documentation technique générée avec Sphinx et publiée sur Read the Docs.
+- a modular Django architecture;
+- automated testing with Pytest;
+- test coverage above 80%;
+- code quality checks with Flake8;
+- Python logging and exception monitoring with Sentry;
+- Docker containerization;
+- a CI/CD pipeline with GitHub Actions;
+- automatic image publishing to Docker Hub;
+- automatic deployment to Render;
+- technical documentation generated with Sphinx and published on Read the Docs.
 
 ---
 
-## Sommaire
+## Table of Contents
 
-- [Aperçu](#aperçu)
-- [Application en production](#application-en-production)
+- [Overview](#overview)
+- [Production Application](#production-application)
 - [Technologies](#technologies)
-- [Architecture du projet](#architecture-du-projet)
-- [Base de données](#base-de-données)
-- [Installation locale](#installation-locale)
-- [Variables d'environnement](#variables-denvironnement)
-- [Lancer l'application](#lancer-lapplication)
-- [Tests et qualité](#tests-et-qualité)
-- [Logging et Sentry](#logging-et-sentry)
+- [Project Architecture](#project-architecture)
+- [Database](#database)
+- [Local Installation](#local-installation)
+- [Environment Variables](#environment-variables)
+- [Run the Application](#run-the-application)
+- [Tests and Code Quality](#tests-and-code-quality)
+- [Logging and Sentry](#logging-and-sentry)
 - [Docker](#docker)
 - [CI/CD](#cicd)
-- [Déploiement](#déploiement)
-- [Documentation technique](#documentation-technique)
-- [Commandes utiles](#commandes-utiles)
-- [Sécurité](#sécurité)
+- [Deployment](#deployment)
+- [Technical Documentation](#technical-documentation)
+- [Useful Commands](#useful-commands)
+- [Security](#security)
 
 ---
 
-## Aperçu
+## Overview
 
-Orange County Lettings permet de consulter :
+Orange County Lettings allows users to browse:
 
-- la liste des locations ;
-- le détail d'une location et de son adresse ;
-- la liste des profils utilisateurs ;
-- le détail d'un profil ;
-- l'interface d'administration Django.
+- the list of lettings;
+- the details of a letting and its address;
+- the list of user profiles;
+- the details of a user profile;
+- the Django administration interface.
 
-L'application a été refactorisée afin de séparer les responsabilités en plusieurs applications Django :
+The application was refactored to separate responsibilities into several Django applications:
 
-- `oc_lettings_site` : configuration générale du projet et pages globales ;
-- `lettings` : gestion des locations et des adresses ;
-- `profiles` : gestion des profils utilisateurs.
+- `oc_lettings_site`: general project configuration and global pages;
+- `lettings`: letting and address management;
+- `profiles`: user profile management.
 
-Des pages personnalisées sont également disponibles pour les erreurs HTTP **404** et **500**.
+Custom **404** and **500** error pages are also implemented.
 
 ---
 
-## Application en production
+## Production Application
 
-Application publique :
+Public application:
 
 https://orange-county-lettings-a4ee.onrender.com/
 
-Documentation technique :
+Technical documentation:
 
 https://orange-county-lettings-read-the-docs.readthedocs.io/fr/latest/
 
-Repository GitHub :
+GitHub repository:
 
 https://github.com/mouquettom/orange-county-lettings
 
-Pipeline GitHub Actions :
+GitHub Actions pipeline:
 
 https://github.com/mouquettom/orange-county-lettings/actions
 
-Image Docker publique :
+Public Docker image:
 
 ```text
 tommouquet/orange-county-lettings
 ```
 
-La version la plus récente peut être récupérée avec :
+The latest image can be pulled with:
 
 ```bash
 docker pull tommouquet/orange-county-lettings:latest
 ```
 
-Chaque build réalisé depuis `master` est également publié avec un tag correspondant au **SHA du commit Git**.
+Each build produced from `master` is also published with a tag matching the **Git commit SHA**.
 
 ---
 
@@ -101,10 +101,10 @@ Chaque build réalisé depuis `master` est également publié avec un tag corres
 - SQLite3
 - Gunicorn
 
-> **Important :** ce projet doit être exécuté avec **Python 3.9**.  
-> Les versions récentes de Python, notamment Python 3.12 et supérieures, ne sont pas adaptées à cette version historique de Django. Par exemple, `distutils`, utilisé par Django 3.0, n'est plus disponible nativement dans les versions récentes de Python.
+> **Important:** this project must be run with **Python 3.9**.  
+> Recent Python versions, especially Python 3.12 and above, are not suitable for this historical Django version. For example, `distutils`, used by Django 3.0, is no longer available by default in recent Python versions.
 
-### Qualité et tests
+### Testing and code quality
 
 - Pytest
 - pytest-django
@@ -112,7 +112,7 @@ Chaque build réalisé depuis `master` est également publié avec un tag corres
 - Coverage
 - Flake8
 
-### Production et observabilité
+### Production and observability
 
 - Sentry
 - Python `logging`
@@ -135,9 +135,9 @@ Chaque build réalisé depuis `master` est également publié avec un tag corres
 
 ---
 
-## Architecture du projet
+## Project Architecture
 
-Structure simplifiée :
+Simplified structure:
 
 ```text
 orange-county-lettings/
@@ -192,71 +192,71 @@ orange-county-lettings/
 └── oc-lettings-site.sqlite3
 ```
 
-### Application `lettings`
+### `lettings` application
 
-Cette application contient les modèles :
+This application contains the following models:
 
 - `Address`
 - `Letting`
 
-Elle gère :
+It handles:
 
-- la liste des locations ;
-- le détail d'une location ;
-- les adresses associées aux locations.
+- the letting list;
+- letting details;
+- addresses associated with lettings.
 
-### Application `profiles`
+### `profiles` application
 
-Cette application contient le modèle :
+This application contains the following model:
 
 - `Profile`
 
-Elle gère :
+It handles:
 
-- la liste des profils ;
-- le détail d'un profil utilisateur.
+- the profile list;
+- user profile details.
 
-### Application `oc_lettings_site`
+### `oc_lettings_site` application
 
-Cette application contient notamment :
+This application contains, among other things:
 
-- la page d'accueil ;
-- la configuration générale Django ;
-- les handlers d'erreurs 404 et 500 ;
-- les URLs racines du projet.
+- the home page;
+- the main Django configuration;
+- custom 404 and 500 handlers;
+- root project URLs.
 
 ---
 
-## Base de données
+## Database
 
-Le projet utilise **SQLite3**.
+The project uses **SQLite3**.
 
-### Modèle `Address`
+### `Address` model
 
-Une adresse contient notamment :
+An address contains:
 
-- un numéro ;
-- une rue ;
-- une ville ;
-- un État ;
-- un code postal ;
-- un code pays ISO.
+- a street number;
+- a street name;
+- a city;
+- a state;
+- a ZIP code;
+- an ISO country code.
 
-### Modèle `Letting`
+### `Letting` model
 
-Une location possède :
+A letting contains:
 
-- un titre ;
-- une relation `OneToOne` vers une `Address`.
+- a title;
+- a `OneToOne` relationship with an `Address`.
 
-### Modèle `Profile`
+### `Profile` model
 
-Un profil possède :
+A profile contains:
 
-- une relation `OneToOne` vers le modèle Django `User` ;
-- une ville favorite facultative.
+- a `OneToOne` relationship with Django's `User` model;
+- an optional favorite city.
 
-Schéma simplifié :
+Simplified schema:
 
 ```text
 User
@@ -268,42 +268,42 @@ Letting
   └── 1 — 1 ── Address
 ```
 
-Lors de la refactorisation, les données de l'ancienne application ont été conservées à l'aide de **migrations de données Django**. Les nouvelles tables ont d'abord été créées, les données ont ensuite été copiées en conservant les identifiants et relations, puis les anciens modèles ont été supprimés.
+During the refactoring process, the data from the original application was preserved using **Django data migrations**. The new tables were created first, then the data was copied while preserving IDs and relationships, and finally the old models were removed.
 
 ---
 
-# Installation locale
+# Local Installation
 
-## Prérequis
+## Requirements
 
 - Git
 - **Python 3.9**
 - `pip`
-- Docker Desktop uniquement si vous souhaitez tester la conteneurisation
+- Docker Desktop only if you want to test containerization
 
-Vérifier que Python 3.9 est disponible :
+Check that Python 3.9 is available:
 
 ```bash
 python3.9 --version
 ```
 
-Résultat attendu :
+Expected result:
 
 ```text
 Python 3.9.x
 ```
 
-> Utilisez explicitement Python 3.9 pour créer l'environnement virtuel.  
-> Une commande générique comme `python3 -m venv .venv` peut utiliser une version plus récente installée sur votre machine et rendre Django 3.0 incompatible.
+> Explicitly use Python 3.9 to create the virtual environment.  
+> A generic command such as `python3 -m venv .venv` may use a newer Python version installed on your machine and make Django 3.0 incompatible.
 
-## 1. Cloner le repository
+## 1. Clone the repository
 
 ```bash
 git clone https://github.com/mouquettom/orange-county-lettings.git
 cd orange-county-lettings
 ```
 
-## 2. Créer un environnement virtuel avec Python 3.9
+## 2. Create a virtual environment with Python 3.9
 
 ### macOS / Linux
 
@@ -314,35 +314,35 @@ source .venv/bin/activate
 
 ### Windows
 
-Avec le launcher Python :
+Using the Python launcher:
 
 ```bash
 py -3.9 -m venv .venv
 .venv\Scripts\activate
 ```
 
-Vérifier la version réellement utilisée dans l'environnement :
+Check the Python version actually used by the virtual environment:
 
 ```bash
 python --version
 ```
 
-Résultat attendu :
+Expected result:
 
 ```text
 Python 3.9.x
 ```
 
-## 3. Installer les dépendances
+## 3. Install dependencies
 
 ```bash
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## 4. Configurer les variables d'environnement
+## 4. Configure environment variables
 
-Créer le fichier `.env` à partir de l'exemple fourni :
+Create `.env` from the provided example file.
 
 ### macOS / Linux
 
@@ -356,20 +356,20 @@ cp .env.example .env
 copy .env.example .env
 ```
 
-### Générer une `SECRET_KEY`
+### Generate a Django `SECRET_KEY`
 
-Après installation des dépendances, une clé Django aléatoire peut être générée avec :
+After installing dependencies, generate a random Django secret key with:
 
 ```bash
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 ```
 
-Copier la valeur obtenue dans `.env`.
+Copy the generated value into `.env`.
 
-Exemple de configuration locale :
+Example local configuration:
 
 ```env
-SECRET_KEY=<clé-générée>
+SECRET_KEY=<generated-key>
 DEBUG=True
 ALLOWED_HOSTS=127.0.0.1,localhost
 
@@ -377,35 +377,35 @@ SENTRY_DSN=
 SENTRY_ENVIRONMENT=development
 ```
 
-`SENTRY_DSN` peut rester vide pour une utilisation locale sans Sentry.
+`SENTRY_DSN` may remain empty for local use without Sentry.
 
-Le fichier `.env` ne doit jamais être versionné.
+The `.env` file must never be committed to Git.
 
-## 5. Vérifier la configuration Django
+## 5. Check the Django configuration
 
 ```bash
 python manage.py check
 ```
 
-Résultat attendu :
+Expected result:
 
 ```text
 System check identified no issues
 ```
 
-## 6. Appliquer les migrations
+## 6. Apply migrations
 
 ```bash
 python manage.py migrate
 ```
 
-Il est également possible d'afficher leur état avec :
+You can also display migration status with:
 
 ```bash
 python manage.py showmigrations
 ```
 
-Pour vérifier qu'aucune modification de modèle n'attend une nouvelle migration :
+To check that no model change is waiting for a new migration:
 
 ```bash
 python manage.py makemigrations --check --dry-run
@@ -413,55 +413,55 @@ python manage.py makemigrations --check --dry-run
 
 ---
 
-## Variables d'environnement
+## Environment Variables
 
-Les principales variables utilisées par l'application sont :
+The main environment variables used by the application are:
 
-| Variable | Description | Exemple local |
+| Variable | Description | Local example |
 |---|---|---|
-| `SECRET_KEY` | Clé secrète Django | clé générée localement |
-| `DEBUG` | Active ou désactive le mode debug | `True` |
-| `ALLOWED_HOSTS` | Hôtes autorisés, séparés par des virgules | `127.0.0.1,localhost` |
-| `SENTRY_DSN` | DSN du projet Sentry | vide si Sentry n'est pas utilisé |
-| `SENTRY_ENVIRONMENT` | Nom de l'environnement Sentry | `development` |
+| `SECRET_KEY` | Django secret key | locally generated key |
+| `DEBUG` | Enables or disables debug mode | `True` |
+| `ALLOWED_HOSTS` | Allowed hosts, separated by commas | `127.0.0.1,localhost` |
+| `SENTRY_DSN` | Sentry project DSN | empty if Sentry is not used |
+| `SENTRY_ENVIRONMENT` | Sentry environment name | `development` |
 
-En production :
+Production example:
 
 ```env
-SECRET_KEY=<clé-de-production>
+SECRET_KEY=<production-key>
 DEBUG=False
 ALLOWED_HOSTS=orange-county-lettings-a4ee.onrender.com
-SENTRY_DSN=<DSN-Sentry>
+SENTRY_DSN=<Sentry-DSN>
 SENTRY_ENVIRONMENT=production
 ```
 
-Les valeurs propres à la production sont configurées directement dans **Render** et ne sont pas stockées dans Git.
+Production-specific values are configured directly in **Render** and are not stored in Git.
 
 ---
 
-## Lancer l'application
+## Run the Application
 
-### Serveur de développement Django
+### Django development server
 
 ```bash
 python manage.py runserver
 ```
 
-L'application est ensuite disponible sur :
+The application is then available at:
 
 http://127.0.0.1:8000/
 
-### Interface d'administration
+### Django administration
 
 http://127.0.0.1:8000/admin/
 
 ---
 
-## Tests et qualité
+## Tests and Code Quality
 
-Le projet utilise **Pytest** pour les tests automatisés et **Flake8** pour le contrôle de qualité du code.
+The project uses **Pytest** for automated testing and **Flake8** for code quality checks.
 
-Les tests sont organisés dans les applications auxquelles ils appartiennent :
+Tests are organized inside the corresponding applications:
 
 ```text
 lettings/tests/
@@ -469,143 +469,143 @@ profiles/tests/
 oc_lettings_site/tests/
 ```
 
-Ils couvrent notamment :
+They cover:
 
-- les modèles ;
-- les URLs ;
-- les vues ;
-- les templates ;
-- les réponses 404 ;
-- les handlers 404 et 500 ;
-- les logs applicatifs.
+- models;
+- URLs;
+- views;
+- templates;
+- 404 responses;
+- custom 404 and 500 handlers;
+- application logging.
 
-La suite actuelle comporte **18 tests**. Le pipeline CI impose une couverture minimale de **80 %**.
+The current suite contains **18 tests**. The CI pipeline enforces a minimum test coverage of **80%**.
 
-### Lancer Flake8
+### Run Flake8
 
 ```bash
 flake8 oc_lettings_site lettings profiles manage.py
 ```
 
-Aucune sortie signifie qu'aucune erreur Flake8 n'a été détectée.
+No output means that no Flake8 issue was detected.
 
-### Préparer les fichiers statiques
+### Collect static files
 
 ```bash
 python manage.py collectstatic --noinput
 ```
 
-### Lancer les tests
+### Run tests
 
 ```bash
 pytest
 ```
 
-### Lancer les tests avec couverture
+### Run tests with coverage
 
 ```bash
 pytest --cov=. --cov-report=term-missing --cov-fail-under=80
 ```
 
-Si la couverture descend sous 80 %, la commande retourne une erreur.
+If coverage falls below 80%, the command fails.
 
 ---
 
-## Logging et Sentry
+## Logging and Sentry
 
-L'application utilise le module standard `logging` de Python.
+The application uses Python's standard `logging` module.
 
-Des logs sont notamment générés dans :
+Logs are generated in:
 
-- `lettings` ;
-- `profiles` ;
+- `lettings`;
+- `profiles`;
 - `oc_lettings_site`.
 
-Chaque module peut créer son logger avec :
+Each module may create its own logger with:
 
 ```python
 logger = logging.getLogger(__name__)
 ```
 
-`__name__` permet d'identifier l'origine du message, par exemple `lettings.views`.
+`__name__` identifies the source module, for example `lettings.views`.
 
-### Niveaux utilisés dans le projet
+### Log levels used in this project
 
-- `INFO` : fonctionnement normal de l'application ;
-- `WARNING` : situation inhabituelle mais gérée.
+- `INFO`: normal application behavior;
+- `WARNING`: unusual but handled situations.
 
-Exemples :
+Examples:
 
 ```text
-INFO    → affichage de la liste des locations
-WARNING → location demandée introuvable, puis réponse 404
+INFO    → displaying the lettings list
+WARNING → requested letting not found, followed by a 404 response
 ```
 
 ### Sentry
 
-Sentry complète les logs applicatifs en centralisant les **exceptions**, notamment les exceptions non gérées.
+Sentry complements application logs by centralizing **exceptions**, especially unhandled exceptions.
 
-Grâce à l'intégration Django, Sentry peut fournir :
+Thanks to the Django integration, Sentry can provide:
 
-- le type d'exception ;
-- le message d'erreur ;
-- la stack trace ;
-- le fichier et la ligne concernés ;
-- l'URL de la requête ;
-- l'environnement (`development` ou `production`) ;
-- le contexte technique de l'événement.
+- the exception type;
+- the error message;
+- the stack trace;
+- the related file and line;
+- the requested URL;
+- the environment (`development` or `production`);
+- technical context about the event.
 
-Sentry ne remplace donc pas les logs : les deux outils sont complémentaires.
+Sentry therefore does not replace logs: both tools are complementary.
 
-Configuration locale :
+Local configuration:
 
 ```env
 SENTRY_DSN=
 SENTRY_ENVIRONMENT=development
 ```
 
-Configuration de production :
+Production configuration:
 
 ```env
-SENTRY_DSN=<DSN-Sentry>
+SENTRY_DSN=<Sentry-DSN>
 SENTRY_ENVIRONMENT=production
 ```
 
-Le DSN n'est pas écrit directement dans le code source.
+The DSN is not hard-coded in the source code.
 
 ---
 
 ## Docker
 
-Le projet est entièrement conteneurisé.
+The project is fully containerized.
 
-Le `Dockerfile` :
+The `Dockerfile`:
 
-- utilise une image Python **3.9** légère ;
-- installe les dépendances ;
-- copie le code du projet ;
-- exécute `collectstatic` ;
-- expose le port 8000 pour l'utilisation locale ;
-- démarre l'application avec Gunicorn.
+- uses a lightweight **Python 3.9** image;
+- installs dependencies;
+- copies the project source code;
+- runs `collectstatic`;
+- exposes port 8000 for local use;
+- starts the application with Gunicorn.
 
-Gunicorn écoute sur :
+Gunicorn listens on:
 
 ```text
 0.0.0.0:${PORT:-8000}
 ```
 
-Cela permet d'utiliser :
+This allows:
 
-- le port `8000` par défaut en local ;
-- le port fourni automatiquement par Render en production.
+- port `8000` to be used locally by default;
+- the port provided automatically by Render to be used in production.
 
-### Construire l'image localement
+### Build the image locally
 
 ```bash
 docker build -t orange-county-lettings:local .
 ```
 
-### Lancer l'image locale
+### Run the local image
 
 ```bash
 docker run --rm \
@@ -614,17 +614,17 @@ docker run --rm \
   orange-county-lettings:local
 ```
 
-Puis ouvrir :
+Then open:
 
 http://127.0.0.1:8000/
 
-### Récupérer l'image depuis Docker Hub
+### Pull the image from Docker Hub
 
 ```bash
 docker pull tommouquet/orange-county-lettings:latest
 ```
 
-### Lancer l'image Docker Hub
+### Run the Docker Hub image
 
 ```bash
 docker run --rm \
@@ -633,43 +633,43 @@ docker run --rm \
   tommouquet/orange-county-lettings:latest
 ```
 
-Cette seconde méthode permet de vérifier que l'image publiée sur Docker Hub fonctionne indépendamment d'un build local.
+This second method verifies that the image published on Docker Hub works independently from a local build.
 
 ---
 
 ## CI/CD
 
-Le workflow est défini dans :
+The workflow is defined in:
 
 ```text
 .github/workflows/ci.yml
 ```
 
-### Push sur une branche
+### Push to any branch
 
-À chaque push, GitHub Actions exécute le job de qualité :
+On every push, GitHub Actions runs the quality job:
 
 ```text
 Checkout
    ↓
 Python 3.9
    ↓
-Installation des dépendances
+Install dependencies
    ↓
 Flake8
    ↓
 collectstatic
    ↓
-Pytest + Coverage >= 80 %
+Pytest + Coverage >= 80%
 ```
 
-Les Pull Requests vers `master` exécutent également ces vérifications.
+Pull Requests targeting `master` also run these checks.
 
-Sur une branche différente de `master`, les jobs de publication Docker et de déploiement sont ignorés.
+On a branch other than `master`, Docker publishing and Render deployment jobs are skipped.
 
-### Push sur `master`
+### Push to `master`
 
-Lors d'un push sur `master`, si le job de tests réussit, le pipeline continue :
+When a push is made to `master`, the pipeline continues only if the tests succeed:
 
 ```text
 Tests and code quality
@@ -679,23 +679,23 @@ Build and push Docker image
 Deploy to Render
 ```
 
-Une version invalide ne peut donc pas être publiée ni déployée si les tests, Flake8 ou la couverture échouent.
+An invalid version therefore cannot be published or deployed if tests, Flake8, or coverage checks fail.
 
-### Publication Docker
+### Docker publishing
 
-Le pipeline publie la même image Docker avec deux tags :
+The pipeline publishes the same Docker image with two tags:
 
 ```text
 tommouquet/orange-county-lettings:latest
-tommouquet/orange-county-lettings:<SHA_DU_COMMIT>
+tommouquet/orange-county-lettings:<COMMIT_SHA>
 ```
 
-- `latest` pointe vers la version la plus récente ;
-- le tag SHA permet d'identifier précisément l'image correspondant à un commit Git donné.
+- `latest` points to the most recent image;
+- the SHA tag identifies exactly which Docker image belongs to a given Git commit.
 
-### Variables et secrets GitHub Actions
+### GitHub Actions variables and secrets
 
-Dans :
+In:
 
 ```text
 Repository
@@ -704,7 +704,7 @@ Repository
 → Actions
 ```
 
-Configurer :
+Configure:
 
 #### Repository variable
 
@@ -719,18 +719,18 @@ DOCKERHUB_TOKEN
 RENDER_DEPLOY_HOOK_URL
 ```
 
-Ces valeurs ne sont pas écrites directement dans `ci.yml`.
+These values are not written directly inside `ci.yml`.
 
 ---
 
-## Déploiement
+## Deployment
 
-L'application est déployée sur **Render** à partir de l'image publiée sur Docker Hub.
+The application is deployed on **Render** from the Docker image published on Docker Hub.
 
-Architecture :
+Architecture:
 
 ```text
-Code local
+Local code
     ↓
 Git push
     ↓
@@ -754,129 +754,129 @@ Gunicorn
     ↓
 Django
     ↓
-HTTPS public
+Public HTTPS
 ```
 
-### Configuration Render
+### Render configuration
 
-Le service utilise l'image :
+The service uses the image:
 
 ```text
 docker.io/tommouquet/orange-county-lettings:latest
 ```
 
-Variables d'environnement :
+Production environment variables:
 
 ```env
-SECRET_KEY=<clé-de-production>
+SECRET_KEY=<production-key>
 DEBUG=False
 ALLOWED_HOSTS=orange-county-lettings-a4ee.onrender.com
-SENTRY_DSN=<DSN-Sentry>
+SENTRY_DSN=<Sentry-DSN>
 SENTRY_ENVIRONMENT=production
 ```
 
-Ne pas ajouter :
+Do not include:
 
-- `https://` dans `ALLOWED_HOSTS` ;
-- de slash final dans `ALLOWED_HOSTS` ;
-- de secret directement dans le repository.
+- `https://` in `ALLOWED_HOSTS`;
+- a trailing slash in `ALLOWED_HOSTS`;
+- secrets directly in the repository.
 
-Render fournit également le port d'écoute utilisé par le conteneur. Le Dockerfile prévoit un fallback sur `8000` pour l'utilisation locale.
+Render also provides the listening port used by the container. The Dockerfile includes a fallback to `8000` for local use.
 
-### Application publique
+### Public application
 
 https://orange-county-lettings-a4ee.onrender.com/
 
-### Fichiers statiques
+### Static files
 
-Les fichiers statiques sont préparés avec :
+Static files are prepared with:
 
 ```bash
 python manage.py collectstatic --noinput
 ```
 
-Ils sont servis en production avec **WhiteNoise**.
+They are served in production using **WhiteNoise**.
 
-### Serveur de production
+### Production server
 
-Django n'est pas lancé avec `runserver` en production.
+Django is not started with `runserver` in production.
 
-Le conteneur démarre **Gunicorn** avec deux workers :
+The container starts **Gunicorn** with two workers and listens on:
 
 ```text
 0.0.0.0:${PORT:-8000}
 ```
 
-### Déploiement automatique
+### Automatic deployment
 
-Après un push sur `master` :
+After a push to `master`:
 
-1. GitHub Actions lance les tests et contrôles de qualité ;
-2. si les contrôles réussissent, l'image Docker est construite ;
-3. l'image est publiée sur Docker Hub ;
-4. le Deploy Hook Render est appelé ;
-5. Render récupère la nouvelle image ;
-6. le service redémarre avec la nouvelle version.
+1. GitHub Actions runs tests and quality checks;
+2. if the checks succeed, the Docker image is built;
+3. the image is published to Docker Hub;
+4. the Render Deploy Hook is triggered;
+5. Render pulls the new image;
+6. the service restarts with the new version.
 
-Une modification du code suivie d'un commit et d'un push sur `master` est donc déployée automatiquement si la CI est verte.
+A code change followed by a commit and push to `master` is therefore deployed automatically if the CI pipeline is successful.
 
 ---
 
-## Documentation technique
+## Technical Documentation
 
-La documentation du projet est générée avec **Sphinx** et publiée sur **Read the Docs**.
+The project documentation is generated with **Sphinx** and published on **Read the Docs**.
 
-Documentation publique :
+Public documentation:
 
 https://orange-county-lettings-read-the-docs.readthedocs.io/fr/latest/
 
-Elle couvre notamment :
+It covers:
 
-- l'installation ;
-- l'architecture ;
-- la base de données et les modèles ;
-- les cas d'utilisation ;
-- le déploiement ;
-- la référence du code.
+- installation;
+- architecture;
+- database and models;
+- usage;
+- deployment;
+- code reference.
 
 ### Structure
 
-Les sources de documentation se trouvent dans :
+Documentation sources are stored in:
 
 ```text
 docs/
 ```
 
-Les pages principales sont écrites en **reStructuredText (`.rst`)**.
+The main pages are written in **reStructuredText (`.rst`)**.
 
-`docs/conf.py` contient la configuration Sphinx.
+`docs/conf.py` contains the Sphinx configuration.
 
-`docs/index.rst` constitue la page d'entrée et définit la navigation principale via le `toctree`.
+`docs/index.rst` is the main documentation entry point and defines the main navigation through the `toctree`.
 
-L'extension **Autodoc** permet de générer une partie de la référence du code à partir des docstrings Python.
+The **Autodoc** extension generates part of the code reference from Python docstrings.
 
-### Générer la documentation localement
+### Build the documentation locally
 
-Installer les dépendances de documentation si nécessaire :
+Install documentation dependencies if needed:
 
 ```bash
 pip install -r docs/requirements.txt
 ```
 
-Puis :
+Then:
 
 ```bash
 cd docs
 make html
 ```
 
-Le résultat est généré dans :
+The generated HTML is written to:
 
 ```text
 docs/_build/html/
 ```
 
-Sur macOS :
+On macOS:
 
 ```bash
 open _build/html/index.html
@@ -884,41 +884,41 @@ open _build/html/index.html
 
 ### Read the Docs
 
-Le fichier :
+The following file:
 
 ```text
 .readthedocs.yaml
 ```
 
-configure la construction de la documentation sur Read the Docs.
+configures the documentation build on Read the Docs.
 
-Read the Docs :
+Read the Docs:
 
-1. récupère le repository GitHub ;
-2. prépare l'environnement Python ;
-3. installe les dépendances ;
-4. exécute Sphinx ;
-5. publie la documentation générée sur son propre domaine.
+1. clones the GitHub repository;
+2. prepares the Python environment;
+3. installs the required dependencies;
+4. runs Sphinx;
+5. publishes the generated documentation on its own domain.
 
-L'URL Read the Docs est donc indépendante des URLs Django de l'application.
+The Read the Docs URL is therefore independent from the Django application URLs.
 
 ---
 
-## Commandes utiles
+## Useful Commands
 
-### Vérifier l'état Git
+### Check Git status
 
 ```bash
 git status
 ```
 
-### Développement
+### Run the development server
 
 ```bash
 python manage.py runserver
 ```
 
-### Vérification Django
+### Check Django configuration
 
 ```bash
 python manage.py check
@@ -951,7 +951,7 @@ pytest --cov=. --cov-report=term-missing --cov-fail-under=80
 flake8 oc_lettings_site lettings profiles manage.py
 ```
 
-### Fichiers statiques
+### Static files
 
 ```bash
 python manage.py collectstatic --noinput
@@ -984,7 +984,7 @@ docker run --rm \
   tommouquet/orange-county-lettings:latest
 ```
 
-### Documentation Sphinx
+### Sphinx documentation
 
 ```bash
 cd docs
@@ -993,33 +993,33 @@ make html
 
 ---
 
-## Sécurité
+## Security
 
-- Les secrets ne sont pas stockés dans le repository.
-- `.env` est utilisé uniquement pour la configuration locale.
-- `.env` est ignoré par Git.
-- `.env.example` documente les variables nécessaires sans contenir de secret.
-- Les secrets du pipeline CI/CD sont stockés dans GitHub Actions.
-- Les variables de production sont configurées dans Render.
-- `DEBUG` est désactivé en production.
-- Sentry est configuré via des variables d'environnement.
-- Le déploiement Docker/Render ne se produit qu'après réussite des contrôles automatisés.
+- Secrets are not stored in the repository.
+- `.env` is used only for local configuration.
+- `.env` is ignored by Git.
+- `.env.example` documents the required variables without containing real secrets.
+- CI/CD secrets are stored in GitHub Actions.
+- Production environment variables are configured in Render.
+- `DEBUG` is disabled in production.
+- Sentry is configured through environment variables.
+- Docker publication and Render deployment occur only after automated checks succeed.
 
 ---
 
-## Projet OpenClassrooms
+## OpenClassrooms Project
 
-Ce projet a été réalisé dans le cadre du parcours **Développeur d'application Python** d'OpenClassrooms.
+This project was completed as part of the **OpenClassrooms Python Application Developer** path.
 
-Les principaux objectifs techniques étaient :
+The main technical objectives were:
 
-- refactoriser une application Django monolithique ;
-- conserver les données existantes grâce aux migrations Django ;
-- améliorer la qualité du code ;
-- ajouter des tests automatisés ;
-- mettre en place la journalisation et Sentry ;
-- créer un pipeline CI/CD ;
-- conteneuriser l'application avec Docker ;
-- publier l'image sur Docker Hub ;
-- déployer l'application en production ;
-- préparer une documentation technique complète.
+- refactor a monolithic Django application;
+- preserve existing data using Django migrations;
+- improve code quality;
+- add automated tests;
+- implement logging and Sentry monitoring;
+- create a CI/CD pipeline;
+- containerize the application with Docker;
+- publish the image on Docker Hub;
+- deploy the application to production;
+- provide complete technical documentation.
