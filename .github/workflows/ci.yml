@@ -17,6 +17,11 @@ jobs:
     name: Tests and code quality
     runs-on: ubuntu-latest
 
+    # DEBUG is disabled by default, so Django requires a SECRET_KEY.
+    # This throwaway value is only used to run the checks.
+    env:
+      SECRET_KEY: ci-only-insecure-secret-key
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7

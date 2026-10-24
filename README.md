@@ -417,13 +417,15 @@ python manage.py makemigrations --check --dry-run
 
 The main environment variables used by the application are:
 
-| Variable | Description | Local example |
-|---|---|---|
-| `SECRET_KEY` | Django secret key | locally generated key |
-| `DEBUG` | Enables or disables debug mode | `True` |
-| `ALLOWED_HOSTS` | Allowed hosts, separated by commas | `127.0.0.1,localhost` |
-| `SENTRY_DSN` | Sentry project DSN | empty if Sentry is not used |
-| `SENTRY_ENVIRONMENT` | Sentry environment name | `development` |
+| Variable | Description | Default | Local example |
+|---|---|---|---|
+| `SECRET_KEY` | Django secret key | required when `DEBUG` is not `True` | locally generated key |
+| `DEBUG` | Enables or disables debug mode | `False` | `True` |
+| `ALLOWED_HOSTS` | Allowed hosts, separated by commas | `127.0.0.1,localhost` | `127.0.0.1,localhost` |
+| `SENTRY_DSN` | Sentry project DSN | empty (Sentry disabled) | empty if Sentry is not used |
+| `SENTRY_ENVIRONMENT` | Sentry environment name | `development` | `development` |
+
+Debug mode is disabled unless `DEBUG=True` is explicitly set. When debug mode is disabled, the application refuses to start without a `SECRET_KEY`, so a missing production key cannot go unnoticed. In local development with `DEBUG=True`, a development-only key is used if `SECRET_KEY` is left empty.
 
 Production example:
 

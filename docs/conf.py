@@ -17,6 +17,10 @@ os.environ.setdefault(
     'oc_lettings_site.settings',
 )
 
+# DEBUG is disabled by default, so Django requires a SECRET_KEY.
+# This value is only used to build the documentation.
+os.environ.setdefault('SECRET_KEY', 'docs-build-only-secret-key')
+
 # Initialize Django so Sphinx can import models, views, etc.
 django.setup()
 

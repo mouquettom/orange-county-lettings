@@ -6,6 +6,7 @@ import sys
 
 from pathlib import Path
 import sentry_sdk
+from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
@@ -17,20 +18,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
 
-# Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(
-    'SECRET_KEY',
-    'development-only-secret-key',
-)
-
 # SECURITY WARNING: don't run with debug turned on in production!
+# Debug mode is disabled unless DEBUG=True is explicitly set.
 DEBUG = os.getenv(
     'DEBUG',
-    'True',
+    'False',
 ).lower() == 'true'
+
+# SECURITY WARNING: keep the secret key used in production secret!
+# A development-only fallback is allowed when DEBUG is enabled. Otherwise the
+# application refuses to start without a SECRET_KEY environment variable.
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'development-only-secret-key'
+    else:
+        raise ImproperlyConfigured(
+            'The SECRET_KEY environment variable must be set when DEBUG is disabled.'
+        )
 
 
 ALLOWED_HOSTS = [

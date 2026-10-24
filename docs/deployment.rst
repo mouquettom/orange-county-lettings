@@ -65,7 +65,7 @@ The configuration used is the following:
 
    COPY . .
 
-   RUN python manage.py collectstatic --noinput
+   RUN SECRET_KEY=build-only-collectstatic python manage.py collectstatic --noinput
 
    EXPOSE 8000
 
@@ -140,9 +140,14 @@ Static files are collected while the image is built:
 
 .. code-block:: docker
 
-   RUN python manage.py collectstatic --noinput
+   RUN SECRET_KEY=build-only-collectstatic python manage.py collectstatic --noinput
 
-They are then served in production by WhiteNoise.
+``collectstatic`` loads the Django settings, which require a ``SECRET_KEY``
+because debug mode is disabled by default. The build-only value is set for
+this command only and is not stored in the image: the real key is provided at
+runtime by Render.
+
+The collected files are then served in production by WhiteNoise.
 
 Production server
 ~~~~~~~~~~~~~~~~~
@@ -286,6 +291,9 @@ It performs, among other things:
 
 The minimum required coverage is 80%.
 
+The job defines a throwaway ``SECRET_KEY`` environment variable, used only to
+run these checks.
+
 The command used to run the tests is:
 
 .. code-block:: bash
@@ -397,6 +405,10 @@ For example:
 .. code-block:: text
 
    DEBUG=False
+
+Debug mode is disabled unless ``DEBUG=True`` is explicitly set. When it is
+disabled, the application refuses to start without a ``SECRET_KEY``, so a
+missing production key cannot go unnoticed.
 
 ``ALLOWED_HOSTS`` must contain the domain used by the application.
 

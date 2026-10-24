@@ -11,7 +11,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN python manage.py collectstatic --noinput
+# collectstatic loads the Django settings, which require a SECRET_KEY.
+# This build-only value is not stored in the image: the real key is provided
+# at runtime through the environment (Render).
+RUN SECRET_KEY=build-only-collectstatic python manage.py collectstatic --noinput
 
 # Default port for local use (Render provides its own through $PORT)
 EXPOSE 8000
