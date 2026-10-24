@@ -33,8 +33,8 @@ def test_custom_404_page(client):
     assert 'Page not found' in content
 
 
-def test_custom_500_pages():
-    """ The test custom HTTP 500 handler. """
+def test_custom_500_page():
+    """ Test the custom HTTP 500 handler. """
     request = RequestFactory().get('/')
 
     response = views.custom_500(request)
