@@ -490,6 +490,8 @@ They cover:
 
 The current suite contains **18 tests**. The CI pipeline enforces a minimum test coverage of **80%**.
 
+Coverage is measured on the application code only: the test files and the migrations are excluded (see the `[coverage:run]` section of `setup.cfg`).
+
 ### Run Flake8
 
 ```bash
