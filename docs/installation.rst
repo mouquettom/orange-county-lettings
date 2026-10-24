@@ -48,7 +48,7 @@ Upgrade pip, then install the project dependencies:
 .. code-block:: bash
 
    python -m pip install --upgrade pip
-   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
 
 Configure environment variables
 -------------------------------
@@ -111,7 +111,7 @@ To quickly start the project after cloning it:
 
    python3 -m venv .venv
    source .venv/bin/activate
-   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
    python manage.py migrate
    python manage.py runserver
 

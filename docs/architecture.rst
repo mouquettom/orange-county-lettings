@@ -60,6 +60,7 @@ The simplified project layout is as follows:
    ├── Dockerfile
    ├── manage.py
    ├── requirements.txt
+   ├── requirements-dev.txt
    ├── setup.cfg
    └── oc-lettings-site.sqlite3
 

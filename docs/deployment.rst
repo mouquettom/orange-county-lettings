@@ -118,6 +118,10 @@ Dependencies are installed from the ``requirements.txt`` file:
 
    RUN pip install --no-cache-dir -r requirements.txt
 
+This file only lists the runtime dependencies. The testing and linting tools
+are listed in ``requirements-dev.txt``, which is used locally and in the CI,
+so they are not installed in the production image.
+
 The requirements file is copied before the rest of the project to take
 advantage of Docker layer caching.
 

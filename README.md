@@ -186,6 +186,7 @@ orange-county-lettings/
 ├── Dockerfile
 ├── manage.py
 ├── requirements.txt
+├── requirements-dev.txt
 ├── setup.cfg
 ├── .env.example
 ├── .readthedocs.yaml
@@ -337,8 +338,13 @@ Python 3.9.x
 
 ```bash
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
+
+Dependencies are split into two files:
+
+- `requirements.txt`: runtime dependencies only, installed in the Docker image;
+- `requirements-dev.txt`: runtime dependencies plus the testing and linting tools (Pytest, Coverage, Flake8), used locally and in the CI.
 
 ## 4. Configure environment variables
 
