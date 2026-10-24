@@ -35,6 +35,7 @@ This project implements:
 - [Technical Documentation](#technical-documentation)
 - [Useful Commands](#useful-commands)
 - [Security](#security)
+- [OpenClassrooms Project](#openclassrooms-project)
 
 ---
 
@@ -273,9 +274,9 @@ During the refactoring process, the data from the original application was prese
 
 ---
 
-# Local Installation
+## Local Installation
 
-## Requirements
+### Requirements
 
 - Git
 - **Python 3.9**
@@ -297,23 +298,23 @@ Python 3.9.x
 > Explicitly use Python 3.9 to create the virtual environment.  
 > A generic command such as `python3 -m venv .venv` may use a newer Python version installed on your machine and make Django 3.0 incompatible.
 
-## 1. Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/mouquettom/orange-county-lettings.git
 cd orange-county-lettings
 ```
 
-## 2. Create a virtual environment with Python 3.9
+### 2. Create a virtual environment with Python 3.9
 
-### macOS / Linux
+#### macOS / Linux
 
 ```bash
 python3.9 -m venv .venv
 source .venv/bin/activate
 ```
 
-### Windows
+#### Windows
 
 Using the Python launcher:
 
@@ -334,7 +335,7 @@ Expected result:
 Python 3.9.x
 ```
 
-## 3. Install dependencies
+### 3. Install dependencies
 
 ```bash
 python -m pip install --upgrade pip
@@ -346,23 +347,23 @@ Dependencies are split into two files:
 - `requirements.txt`: runtime dependencies only, installed in the Docker image;
 - `requirements-dev.txt`: runtime dependencies plus the testing and linting tools (Pytest, Coverage, Flake8), used locally and in the CI.
 
-## 4. Configure environment variables
+### 4. Configure environment variables
 
 Create `.env` from the provided example file.
 
-### macOS / Linux
+#### macOS / Linux
 
 ```bash
 cp .env.example .env
 ```
 
-### Windows
+#### Windows
 
 ```cmd
 copy .env.example .env
 ```
 
-### Generate a Django `SECRET_KEY`
+#### Generate a Django `SECRET_KEY`
 
 After installing dependencies, generate a random Django secret key with:
 
@@ -387,7 +388,7 @@ SENTRY_ENVIRONMENT=development
 
 The `.env` file must never be committed to Git.
 
-## 5. Check the Django configuration
+### 5. Check the Django configuration
 
 ```bash
 python manage.py check
@@ -399,7 +400,7 @@ Expected result:
 System check identified no issues
 ```
 
-## 6. Apply migrations
+### 6. Apply migrations
 
 ```bash
 python manage.py migrate

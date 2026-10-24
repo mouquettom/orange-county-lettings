@@ -62,9 +62,12 @@ The profiles page displays the users who have a profile in the application.
 
 The user can then select a profile to open its detail page.
 
-This page shows, among other things:
+This page shows:
 
 - the username;
+- the user's first name;
+- the user's last name;
+- the user's email address;
 - the profile's favorite city, when provided.
 
 The corresponding flow is:
